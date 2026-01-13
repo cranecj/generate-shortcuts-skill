@@ -184,8 +184,9 @@ Some actions have non-standard mappings:
 | `takevideo` | WFTakeVideoAction | Take video |
 | `selectphoto` | WFSelectPhotoAction | Select photos |
 | `getlatestphotos` | WFGetLatestPhotosAction | Get latest photos |
+| `filter.photos` | WFContentItemFilterAction | Find/filter photos (see FILTERS.md) |
 | `savetocameraroll` | WFSaveToCameraRollAction | Save to camera roll |
-| `deletephotos` | WFDeletePhotosAction | Delete photos |
+| `deletephotos` | WFDeletePhotosAction | Delete photos (**uses `photos` param, not `WFInput`**) |
 | `playmusic` | WFPlayMusicAction | Play music |
 | `playpause` | WFPlayPauseAction | Play/Pause |
 | `skipsong` | WFSkipSongAction | Skip song |
@@ -401,4 +402,237 @@ weather.currentconditions, weather.forecast, wordpresspost
 ```xml
 <key>WFHTTPMethod</key>
 <string>GET</string>
+```
+
+---
+
+## Action-Specific Parameters
+
+### Get Contents of URL (`is.workflow.actions.downloadurl`)
+
+The `downloadurl` action (WFDownloadURLAction) makes HTTP requests. It supports various methods, headers, and body types.
+
+#### Basic Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `UUID` | String | Unique identifier for variable references |
+| `WFURL` | Variable ref or string | The URL to request |
+| `WFHTTPMethod` | String | HTTP method: `GET`, `POST`, `PUT`, `PATCH`, `DELETE` |
+| `WFHTTPBodyType` | String | Body type: `JSON`, `Form`, `File` |
+
+#### Headers (`WFHTTPHeaders`)
+
+Headers use `WFDictionaryFieldValue` serialization with key-value items:
+
+```xml
+<key>WFHTTPHeaders</key>
+<dict>
+    <key>Value</key>
+    <dict>
+        <key>WFDictionaryFieldValueItems</key>
+        <array>
+            <dict>
+                <key>WFItemType</key>
+                <integer>0</integer>
+                <key>WFKey</key>
+                <dict>
+                    <key>Value</key>
+                    <dict>
+                        <key>string</key>
+                        <string>Content-Type</string>
+                    </dict>
+                    <key>WFSerializationType</key>
+                    <string>WFTextTokenString</string>
+                </dict>
+                <key>WFValue</key>
+                <dict>
+                    <key>Value</key>
+                    <dict>
+                        <key>string</key>
+                        <string>application/json</string>
+                    </dict>
+                    <key>WFSerializationType</key>
+                    <string>WFTextTokenString</string>
+                </dict>
+            </dict>
+        </array>
+    </dict>
+    <key>WFSerializationType</key>
+    <string>WFDictionaryFieldValue</string>
+</dict>
+```
+
+#### JSON Body (`WFJSONValues`)
+
+When `WFHTTPBodyType` is `JSON`, use `WFJSONValues` for key-value pairs:
+
+```xml
+<key>WFJSONValues</key>
+<dict>
+    <key>Value</key>
+    <dict>
+        <key>WFDictionaryFieldValueItems</key>
+        <array>
+            <dict>
+                <key>WFItemType</key>
+                <integer>0</integer>
+                <key>WFKey</key>
+                <dict>
+                    <key>Value</key>
+                    <dict>
+                        <key>string</key>
+                        <string>prompt</string>
+                    </dict>
+                    <key>WFSerializationType</key>
+                    <string>WFTextTokenString</string>
+                </dict>
+                <key>WFValue</key>
+                <!-- Can be a static string or variable reference -->
+                <dict>
+                    <key>Value</key>
+                    <dict>
+                        <key>attachmentsByRange</key>
+                        <dict>
+                            <key>{0, 1}</key>
+                            <dict>
+                                <key>OutputUUID</key>
+                                <string>ASK-ACTION-UUID</string>
+                                <key>OutputName</key>
+                                <string>Provided Input</string>
+                                <key>Type</key>
+                                <string>ActionOutput</string>
+                            </dict>
+                        </dict>
+                        <key>string</key>
+                        <string>￼</string>
+                    </dict>
+                    <key>WFSerializationType</key>
+                    <string>WFTextTokenString</string>
+                </dict>
+            </dict>
+        </array>
+    </dict>
+    <key>WFSerializationType</key>
+    <string>WFDictionaryFieldValue</string>
+</dict>
+```
+
+#### Form Body (`WFFormValues`)
+
+When `WFHTTPBodyType` is `Form`, use `WFFormValues` (same structure as `WFJSONValues`).
+
+#### File Body (`WFRequestVariable`)
+
+When `WFHTTPBodyType` is `File`, use `WFRequestVariable` to reference file data:
+
+```xml
+<key>WFRequestVariable</key>
+<dict>
+    <key>Value</key>
+    <dict>
+        <key>attachmentsByRange</key>
+        <dict>
+            <key>{0, 1}</key>
+            <dict>
+                <key>OutputUUID</key>
+                <string>FILE-SOURCE-UUID</string>
+                <key>OutputName</key>
+                <string>File</string>
+                <key>Type</key>
+                <string>ActionOutput</string>
+            </dict>
+        </dict>
+        <key>string</key>
+        <string>￼</string>
+    </dict>
+    <key>WFSerializationType</key>
+    <string>WFTextTokenString</string>
+</dict>
+```
+
+#### WFItemType Values
+
+The `WFItemType` field in dictionary items indicates the value type:
+
+| Value | Type |
+|-------|------|
+| 0 | Text/String |
+| 1 | Number |
+| 2 | Array |
+| 3 | Dictionary |
+| 4 | Boolean |
+
+---
+
+### Find Photos (`is.workflow.actions.filter.photos`)
+
+Searches the photo library with filters. See [FILTERS.md](./FILTERS.md) for complete filter documentation.
+
+#### Key Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `UUID` | String | Action identifier for output reference |
+| `WFContentItemFilter` | Dict | Filter conditions (see FILTERS.md) |
+| `WFContentItemSortProperty` | String | Sort by: `Date Taken`, `Creation Date`, etc. |
+| `WFContentItemSortOrder` | String | `Latest First` or `Oldest First` |
+| `WFContentItemLimitEnabled` | Boolean | Enable result limit |
+| `WFContentItemLimitNumber` | Integer | Max results to return |
+
+#### Filter Properties for Photos
+
+| Property | Type | Notes |
+|----------|------|-------|
+| `Is a Screenshot` | Boolean | Use this for screenshots, NOT media_type |
+| `Media Type` | Enum | ONLY: `Image`, `Video`, `Live Photo` |
+| `Date Taken` | Date | Use operators 1002 (is today), 1001 (is in the last) |
+| `Album` | String | Album name |
+| `Is Favorite` | Boolean | Favorited photos |
+| `Is Hidden` | Boolean | Hidden photos |
+
+#### Common Mistake: Screenshot Filtering
+
+**WRONG:** Using `Media Type` = `Screenshot` - This value is invalid!
+
+**CORRECT:** Use `Is a Screenshot` = `true` (boolean filter)
+
+---
+
+### Delete Photos (`is.workflow.actions.deletephotos`)
+
+Deletes photos from the library.
+
+#### Critical: Parameter Key
+
+**The parameter key is `photos` (lowercase), NOT `WFInput`!**
+
+This is an exception to the normal pattern where most actions use `WFInput`.
+
+#### Correct Structure
+
+```xml
+<dict>
+    <key>WFWorkflowActionIdentifier</key>
+    <string>is.workflow.actions.deletephotos</string>
+    <key>WFWorkflowActionParameters</key>
+    <dict>
+        <key>UUID</key>
+        <string>DELETE-UUID</string>
+        <key>photos</key>  <!-- NOT WFInput! -->
+        <dict>
+            <key>Value</key>
+            <dict>
+                <key>OutputName</key>
+                <string>Photos</string>
+                <key>OutputUUID</key>
+                <string>FIND-PHOTOS-UUID</string>
+                <key>Type</key>
+                <string>ActionOutput</string>
+            </dict>
+            <key>WFSerializationType</key>
+            <string>WFTextTokenAttachment</string>
+        </dict>
+    </dict>
+</dict>
 ```

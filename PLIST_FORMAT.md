@@ -2,6 +2,13 @@
 
 Complete documentation of the `.shortcut` file structure.
 
+**Related docs:**
+- [ACTIONS.md](./ACTIONS.md) - Action identifiers and parameters
+- [FILTERS.md](./FILTERS.md) - Content filters for Find/Filter actions
+- [PARAMETER_TYPES.md](./PARAMETER_TYPES.md) - All parameter value types
+- [VARIABLES.md](./VARIABLES.md) - Variable references and outputs
+- [CONTROL_FLOW.md](./CONTROL_FLOW.md) - Conditionals, loops, menus
+
 ## Root Structure
 
 A `.shortcut` file is a binary plist (can be written as XML, then converted). The root is a dictionary with these keys:

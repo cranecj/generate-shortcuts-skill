@@ -138,6 +138,8 @@ Control flow actions (repeat, conditional, menu) use:
 | Repeat (each) | `is.workflow.actions.repeat.each` | `WFInput`, `GroupingIdentifier`, `WFControlFlowMode` |
 | If/Otherwise | `is.workflow.actions.conditional` | `WFInput`, `WFCondition`, `GroupingIdentifier`, `WFControlFlowMode` |
 | Choose from Menu | `is.workflow.actions.choosefrommenu` | `WFMenuPrompt`, `WFMenuItems`, `GroupingIdentifier`, `WFControlFlowMode` |
+| Find Photos | `is.workflow.actions.filter.photos` | `WFContentItemFilter` (see FILTERS.md) |
+| Delete Photos | `is.workflow.actions.deletephotos` | `photos` (**NOT** `WFInput`!) |
 
 ## Detailed Reference Files
 
@@ -145,8 +147,10 @@ For complete documentation, see:
 - [PLIST_FORMAT.md](PLIST_FORMAT.md) - Complete plist structure
 - [ACTIONS.md](ACTIONS.md) - All 427 WF*Action identifiers and parameters
 - [APPINTENTS.md](APPINTENTS.md) - All 728 AppIntent actions
+- [PARAMETER_TYPES.md](PARAMETER_TYPES.md) - All parameter value types and serialization formats
 - [VARIABLES.md](VARIABLES.md) - Variable reference system
 - [CONTROL_FLOW.md](CONTROL_FLOW.md) - Repeat, Conditional, Menu patterns
+- [FILTERS.md](FILTERS.md) - Content filters for Find/Filter actions (photos, files, etc.)
 - [EXAMPLES.md](EXAMPLES.md) - Complete working examples
 
 ## Signing Shortcuts
