@@ -1,6 +1,6 @@
 # AppIntents Reference
 
-Complete catalog of all 728 AppIntent actions available in macOS/iOS.
+Complete catalog of all 730 AppIntent actions available in macOS/iOS.
 
 ## AppIntents vs WF*Actions
 
@@ -135,6 +135,17 @@ Examples:
 | `PinNotesIntent` | Pin notes |
 | `FindNotesIntent` | Find notes |
 
+### Messages (2 actions) — iOS 26+
+
+| Identifier | Description |
+|------------|-------------|
+| `FindMessagesIntent` | Find/search messages with filters |
+| `FindConversationsIntent` | Find/search conversations (pairs with Open Conversation) |
+
+BundleIdentifier: `com.apple.MobileSMS`
+
+**Find Conversations** works well with the existing **Open Conversation** action to search for and then open a specific conversation. **Find Messages** is a powerful search tool for finding individual messages by content, sender, date, etc.
+
 ### Safari (18 actions)
 
 | Identifier | Description |
@@ -241,7 +252,7 @@ Examples:
 
 ## Complete AppIntent Identifier List
 
-All 728 AppIntent identifiers organized alphabetically by prefix:
+All 730 AppIntent identifiers organized alphabetically by prefix:
 
 ### Open* (Settings Deep Links)
 ```
@@ -291,10 +302,10 @@ SetTrueToneIntent, SetVolumeIntent, SetWiFiIntent
 ### Find* (Search Actions)
 ```
 FindAlbumsIntent, FindBookmarksIntent, FindCalendarEventsIntent,
-FindContactsIntent, FindFilesIntent, FindHomeDeviceIntent, FindHomeIntent,
-FindHomeRoomIntent, FindHomeSceneIntent, FindNotesIntent, FindPhotosIntent,
-FindReadingListItemsIntent, FindRemindersIntent, FindSportsEventsIntent,
-FindTabGroupsIntent, FindTabsIntent, FindVoiceMemosIntent
+FindContactsIntent, FindConversationsIntent, FindFilesIntent, FindHomeDeviceIntent,
+FindHomeIntent, FindHomeRoomIntent, FindHomeSceneIntent, FindMessagesIntent,
+FindNotesIntent, FindPhotosIntent, FindReadingListItemsIntent, FindRemindersIntent,
+FindSportsEventsIntent, FindTabGroupsIntent, FindTabsIntent, FindVoiceMemosIntent
 ```
 
 ---
@@ -327,6 +338,7 @@ Common Bundle Identifiers:
 - `com.apple.AccessibilityUtilities.AXSettingsShortcuts` - Accessibility
 - `com.apple.Preferences` - Settings
 - `com.apple.clock` - Clock
+- `com.apple.MobileSMS` - Messages
 - `com.apple.mobilenotes` - Notes
 - `com.apple.reminders` - Reminders
 - `com.apple.Safari` - Safari

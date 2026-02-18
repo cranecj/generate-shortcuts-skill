@@ -1,6 +1,6 @@
 # Content Item Filters Reference
 
-Documentation for `WFContentItemFilter` used in Find/Filter actions like FindPhotos, FindFiles, FindReminders, etc.
+Documentation for `WFContentItemFilter` used in Find/Filter actions like FindPhotos, FindFiles, FindReminders, FindMessages (iOS 26+), etc.
 
 ## Filter Structure
 
@@ -275,6 +275,79 @@ Find screenshots taken today:
 
 ---
 
+## FindMessages Complete Example
+
+**iOS 26+**. Find messages containing "meeting" from the last week:
+
+```xml
+<dict>
+    <key>WFWorkflowActionIdentifier</key>
+    <string>is.workflow.actions.filter.messages</string>
+    <key>WFWorkflowActionParameters</key>
+    <dict>
+        <key>UUID</key>
+        <string>FIND-MESSAGES-UUID</string>
+        <key>WFContentItemFilter</key>
+        <dict>
+            <key>Value</key>
+            <dict>
+                <key>WFActionParameterFilterPrefix</key>
+                <integer>1</integer>
+                <key>WFContentPredicateBoundedDate</key>
+                <false/>
+                <key>WFActionParameterFilterTemplates</key>
+                <array>
+                    <!-- Content contains "meeting" -->
+                    <dict>
+                        <key>Operator</key>
+                        <integer>99</integer>
+                        <key>Property</key>
+                        <string>Content</string>
+                        <key>Removable</key>
+                        <true/>
+                        <key>Values</key>
+                        <dict>
+                            <key>String</key>
+                            <string>meeting</string>
+                            <key>Unit</key>
+                            <integer>4</integer>
+                        </dict>
+                    </dict>
+                    <!-- Date is in the last 1 week -->
+                    <dict>
+                        <key>Operator</key>
+                        <integer>1001</integer>
+                        <key>Property</key>
+                        <string>Date</string>
+                        <key>Removable</key>
+                        <true/>
+                        <key>Values</key>
+                        <dict>
+                            <key>Number</key>
+                            <integer>1</integer>
+                            <key>Unit</key>
+                            <integer>8192</integer>
+                        </dict>
+                    </dict>
+                </array>
+            </dict>
+            <key>WFSerializationType</key>
+            <string>WFContentPredicateTableTemplate</string>
+        </dict>
+        <key>WFContentItemSortProperty</key>
+        <string>Date</string>
+        <key>WFContentItemSortOrder</key>
+        <string>Latest First</string>
+        <key>WFContentItemLimitEnabled</key>
+        <true/>
+        <key>WFContentItemLimitNumber</key>
+        <integer>10</integer>
+    </dict>
+</dict>
+```
+
+---
+
 ## Available Filter Properties by Content Type
 
 ### Photos (WFPhotoMediaContentItem)
@@ -307,6 +380,16 @@ Find screenshots taken today:
 | `Creation Date` | Date | Use date operators |
 | `File Size` | Number | Bytes |
 | `Last Modified Date` | Date | Use date operators |
+
+### Messages (WFMessageContentItem) — iOS 26+
+
+| Property | Type | Values |
+|----------|------|--------|
+| `Sender` | String | Contact name or phone number |
+| `Content` | String | Message body text |
+| `Date` | Date | Use date operators |
+| `Is Read` | Boolean | true/false |
+| `Has Attachment` | Boolean | true/false |
 
 ### Reminders (WFReminderContentItem)
 

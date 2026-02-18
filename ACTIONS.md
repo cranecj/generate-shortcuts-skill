@@ -1,6 +1,6 @@
 # Shortcuts Actions Reference
 
-Complete catalog of all 427 WF*Action classes and their identifiers.
+Complete catalog of all 428 WF*Action classes and their identifiers.
 
 ## Identifier Mapping Rules
 
@@ -226,6 +226,7 @@ Some actions have non-standard mappings:
 | `share` | WFShareAction | Share |
 | `airdrop` | WFAirDropAction | AirDrop |
 | `sendmessage` | WFSendMessageAction | Send message |
+| `filter.messages` | WFContentItemFilterAction | Find/filter messages (iOS 26+, see FILTERS.md) |
 | `sendemail` | WFSendEmailAction | Send email |
 | `startcall` | WFStartCallAction | Start call |
 | `contacts` | WFContactsAction | Get contacts |
@@ -248,7 +249,7 @@ Some actions have non-standard mappings:
 
 ## Complete Identifier List
 
-All 427 action identifiers (prefix `is.workflow.actions.` omitted):
+All 428 action identifiers (prefix `is.workflow.actions.` omitted):
 
 ```
 addframetogif, addmusictoupnext, addnewcalendar, addnewcontact, addnewevent,
@@ -268,7 +269,7 @@ createplaylist, date, delay, deletefile, deletephotos, detectlanguage, dictatete
 dictionary, displaysleep, documentpicker.open, documentpicker.save, downloadurl,
 ejectdisk, emailaddress, encodemedia, evernoteappend, evernotecreate, evernotedelete,
 evernotegetlink, evernotegetnotes, exit, expandurl, extractarchive,
-extracttextfromimage, file, filter.contentitems, finderimageconvert,
+extracttextfromimage, file, filter.contentitems, filter.messages, finderimageconvert,
 findhealthsamples, focusconfigurationlink, folder, formatdate, formatfilesize,
 formatnumber, generatehash, generatemachinereadablecode, getclass, getclipboard,
 getcurrentapp, getcurrentlocation, getcurrentsafariwebpage, getcurrentsong,
@@ -562,6 +563,93 @@ The `WFItemType` field in dictionary items indicates the value type:
 | 2 | Array |
 | 3 | Dictionary |
 | 4 | Boolean |
+
+---
+
+### Find Messages (`is.workflow.actions.filter.messages`)
+
+**iOS 26+**. Searches the Messages app with filters. Uses the same `WFContentItemFilter` pattern as FindPhotos. See [FILTERS.md](./FILTERS.md) for complete filter documentation.
+
+#### Key Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `UUID` | String | Action identifier for output reference |
+| `WFContentItemFilter` | Dict | Filter conditions (see FILTERS.md) |
+| `WFContentItemSortProperty` | String | Sort by: `Date`, `Sender` |
+| `WFContentItemSortOrder` | String | `Latest First` or `Oldest First` |
+| `WFContentItemLimitEnabled` | Boolean | Enable result limit |
+| `WFContentItemLimitNumber` | Integer | Max results to return |
+
+#### Filter Properties for Messages
+
+| Property | Type | Notes |
+|----------|------|-------|
+| `Sender` | String | Contact name or phone number |
+| `Content` | String | Message body text |
+| `Date` | Date | Use date operators (1001, 1002, etc.) |
+| `Is Read` | Boolean | true/false |
+| `Has Attachment` | Boolean | true/false |
+
+#### Find Messages Example
+
+Find unread messages from today:
+
+```xml
+<dict>
+    <key>WFWorkflowActionIdentifier</key>
+    <string>is.workflow.actions.filter.messages</string>
+    <key>WFWorkflowActionParameters</key>
+    <dict>
+        <key>UUID</key>
+        <string>FIND-MESSAGES-UUID</string>
+        <key>WFContentItemFilter</key>
+        <dict>
+            <key>Value</key>
+            <dict>
+                <key>WFActionParameterFilterPrefix</key>
+                <integer>1</integer>
+                <key>WFContentPredicateBoundedDate</key>
+                <false/>
+                <key>WFActionParameterFilterTemplates</key>
+                <array>
+                    <!-- Is Read = false -->
+                    <dict>
+                        <key>Operator</key>
+                        <integer>4</integer>
+                        <key>Property</key>
+                        <string>Is Read</string>
+                        <key>Removable</key>
+                        <true/>
+                        <key>Values</key>
+                        <dict>
+                            <key>Bool</key>
+                            <false/>
+                            <key>Unit</key>
+                            <integer>4</integer>
+                        </dict>
+                    </dict>
+                    <!-- Date is today -->
+                    <dict>
+                        <key>Operator</key>
+                        <integer>1002</integer>
+                        <key>Property</key>
+                        <string>Date</string>
+                        <key>Removable</key>
+                        <true/>
+                    </dict>
+                </array>
+            </dict>
+            <key>WFSerializationType</key>
+            <string>WFContentPredicateTableTemplate</string>
+        </dict>
+        <key>WFContentItemSortProperty</key>
+        <string>Date</string>
+        <key>WFContentItemSortOrder</key>
+        <string>Latest First</string>
+    </dict>
+</dict>
+```
 
 ---
 

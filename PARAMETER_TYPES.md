@@ -198,6 +198,7 @@ Actions that use content filters:
 - `is.workflow.actions.filter.music`
 - `is.workflow.actions.filter.articles`
 - `is.workflow.actions.filter.apps`
+- `is.workflow.actions.filter.messages` (iOS 26+)
 - `is.workflow.actions.conditional` (via `WFConditions`)
 
 ---

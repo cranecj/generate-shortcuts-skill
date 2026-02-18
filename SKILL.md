@@ -1,6 +1,6 @@
 ---
 name: shortcuts-generator
-description: Generate macOS/iOS Shortcuts by creating plist files. Use when asked to create shortcuts, automate workflows, build .shortcut files, or generate Shortcuts plists. Covers 1,155 actions (427 WF*Actions + 728 AppIntents), variable references, and control flow.
+description: Generate macOS/iOS Shortcuts by creating plist files. Use when asked to create shortcuts, automate workflows, build .shortcut files, or generate Shortcuts plists. Covers 1,158 actions (428 WF*Actions + 730 AppIntents), variable references, and control flow.
 allowed-tools: Write, Bash
 ---
 
@@ -139,6 +139,7 @@ Control flow actions (repeat, conditional, menu) use:
 | If/Otherwise | `is.workflow.actions.conditional` | `WFInput`, `WFCondition`, `GroupingIdentifier`, `WFControlFlowMode` |
 | Choose from Menu | `is.workflow.actions.choosefrommenu` | `WFMenuPrompt`, `WFMenuItems`, `GroupingIdentifier`, `WFControlFlowMode` |
 | Find Photos | `is.workflow.actions.filter.photos` | `WFContentItemFilter` (see FILTERS.md) |
+| Find Messages | `is.workflow.actions.filter.messages` | `WFContentItemFilter` (iOS 26+, see FILTERS.md) |
 | Delete Photos | `is.workflow.actions.deletephotos` | `photos` (**NOT** `WFInput`!) |
 
 ## Detailed Reference Files
@@ -150,7 +151,7 @@ For complete documentation, see:
 - [PARAMETER_TYPES.md](PARAMETER_TYPES.md) - All parameter value types and serialization formats
 - [VARIABLES.md](VARIABLES.md) - Variable reference system
 - [CONTROL_FLOW.md](CONTROL_FLOW.md) - Repeat, Conditional, Menu patterns
-- [FILTERS.md](FILTERS.md) - Content filters for Find/Filter actions (photos, files, etc.)
+- [FILTERS.md](FILTERS.md) - Content filters for Find/Filter actions (photos, files, messages, etc.)
 - [EXAMPLES.md](EXAMPLES.md) - Complete working examples
 
 ## Signing Shortcuts
